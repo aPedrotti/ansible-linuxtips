@@ -37,12 +37,12 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-  - { src: 'app_service.yml', dest: '/opt/giropops/app_service.yml' } 
-  register: app_service_copy
+  - { src: 'service-app.yml', dest: '/opt/giropops/service-app.yml' } 
+  register: service-app_copy
 
 - name: Deploying App Service
   shell:
-    kubectl apply -f /opt/giropops/app_service.yml
+    kubectl apply -f /opt/giropops/service-app.yml
 - name: Deploying App V1
   shell:
     kubectl apply -f /opt/giropops/app.yml

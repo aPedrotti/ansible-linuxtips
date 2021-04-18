@@ -1,11 +1,11 @@
 apiVersion: v1
-kind: Service 
+kind: Service
 metadata:
   labels:
     app: giropops
     run: nginx
-    track: stable 
-  name: app-service
+    track: stable
+  name: giropops
   namespace: default
 spec:
   externalTrafficPolicy: Cluster
