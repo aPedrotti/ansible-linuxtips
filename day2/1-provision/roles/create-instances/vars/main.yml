@@ -1,0 +1,10 @@
+---
+# vars file for create-instances
+image: ami-03d315ad33b9d49c4
+instance_type: t2.medium
+instance_count: 3
+key_name: ansible
+my_ip: "189.6.236.207/32"
+region: us-east-1
+profile: personal
+sec_group_name: k8s_sg

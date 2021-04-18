@@ -1,0 +1,4 @@
+---
+# tasks file for create-instances
+- include: sec_group.yml
+- include: provisioning.yml

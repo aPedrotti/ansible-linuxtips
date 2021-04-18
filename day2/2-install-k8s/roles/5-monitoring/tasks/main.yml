@@ -1,0 +1,3 @@
+---
+# tasks file for 5-monitoring
+- include: monitoring.yml

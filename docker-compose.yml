@@ -1,0 +1,10 @@
+version: "3.0"
+services:
+  ci:
+    build: .
+    container_name: ci
+    volumes: 
+      - "$HOME/.aws/credentials:$HOME/.aws/credentials"
+      - "$HOME/.aws/config:$HOME/.aws/config"
+      #- "$PWD:$USER"
+

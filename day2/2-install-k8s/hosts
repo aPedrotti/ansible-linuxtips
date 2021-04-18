@@ -1,0 +1,16 @@
+[k8s-master]
+ ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+
+[k8s-workers]
+ ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+ ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+
+[k8s-workers:vars]
+K8S_MASTER_NODE=
+K8S_API_SECURE_PORT=6443
+K8S_NODE_01=
+K8S_NODE_02=
+
+%{ for ip in app-ip ~}
+${ip} ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+%{ endfor ~}

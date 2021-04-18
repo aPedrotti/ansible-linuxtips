@@ -1,0 +1,26 @@
+---
+- hosts: app
+  become: yes
+  remote_user: ubuntu
+  tasks:
+  - name: Installing Nginx
+    package:
+      name: nginx
+      state: present
+      update_cache: yes
+  - name: Configuring Nginx Service
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+  - name: Creating Index File
+    template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
+    notify: Restarting NGINX
+
+  handlers:
+  - name: Restarting NGINX
+    service:
+      name: nginx
+      state: restarted

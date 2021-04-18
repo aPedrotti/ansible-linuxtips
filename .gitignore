@@ -1,0 +1,3 @@
+awx/.vagrant
+awx/*.log
+terraform/.terraform

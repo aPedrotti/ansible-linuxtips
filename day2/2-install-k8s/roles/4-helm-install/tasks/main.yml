@@ -1,0 +1,3 @@
+---
+# tasks file for 4-helm-install
+- include: install-helm.yml

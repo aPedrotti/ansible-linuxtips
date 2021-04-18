@@ -1,0 +1,3 @@
+---
+# tasks file for app-deploy
+- include: app-deploy.yml

@@ -1,0 +1,41 @@
+---
+- hosts: local
+  roles: 
+    - { role: 0-create-instances, tags: ["create_instances_role"] }
+
+- hosts: all
+  become: yes
+  user: ubuntu
+  gather_facts: no 
+  pre_tasks: 
+  - name: 'Updating Repo'
+    raw: 'apt-get update'
+  - name: 'Installing Python'
+    raw: 'apt-get install -y python'
+  roles:
+  - { role: 1-install-k8s, tags: ["install_k8s_role"] }
+
+
+- hosts: k8s-master
+  become: yes
+  user: ubuntu
+  roles: 
+  - { role: 2-create-cluster, tags: ["create_cluster_role"] }
+
+- hosts: k8s-workers
+  become: yes
+  user: ubuntu
+  roles: 
+  - { role: 3-join-workers, tags: ["join_workers_role"] }
+
+- hosts: k8s-master
+  become: yes
+  user: ubuntu
+  roles: 
+  - { role: 4-helm-install, tags: ["helm_install_role"] }
+
+- hosts: k8s-master
+  become: yes
+  user: ubuntu
+  roles: 
+  - { role: 5-monitoring, tags: ["monitoring_role"] }

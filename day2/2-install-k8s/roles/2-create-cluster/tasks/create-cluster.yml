@@ -1,0 +1,49 @@
+- name: Removing old Cluster 
+  command: 
+    kubeadm reset --force
+  register: kubeadm_init
+
+- name: Initialize K8S Cluster
+  command:
+    kubeadm init
+  register: kubect_init
+
+- name: Create Kube Dir
+  file: 
+    path: ~/.kube
+    state: directory
+- name: Linking admin config to home
+  file: 
+    src: /etc/kubernetes/admin.conf
+    path: ~/.kube/config
+    state: link
+
+- name: Create K8s Network
+  shell: 
+    kubectl apply -f "{{ default_k8s_weavenet_url }}"
+  register: weavenet_result
+
+- name: Get K8s Init Token
+  shell:
+    kubeadm token list | cut -d ' ' -f1 |sed -n '2p'
+  register: k8s_token
+
+- name: CA Hash
+  shell:
+    openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  register: k8s_master_ca_hash
+  #description: https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/#discovering-what-cluster-ca-to-trust
+
+- name: Adding Token and hash to a dummy host
+  add_host:
+    name: "K8S_TOKEN_HOLDER"
+    token: "{{ k8s_token.stdout }}"
+    hash: "{{ k8s_master_ca_hash.stdout }}"
+
+- name: Print token
+  debug:
+    msg: "[MASTER] K8S_TOKEN_HOLDER - Token is {{ hostvars['K8S_TOKEN_HOLDER']['token']}}"
+- name: Print Hash 
+  debug:
+    msg: "[MASTER] K8S_TOKEN_HOLDER - Hash is {{ hostvars['K8S_TOKEN_HOLDER']['hash']}}"
+

@@ -1,0 +1,60 @@
+- name: Install Pip
+  apt:
+    name: python3-pip
+    state: present
+- name: Install k8s dependencies
+  shell:
+    pip3 install openshift PyYAML
+
+- name: Create App Directory
+  file: path={{item}} state=directory
+  with_items:
+    - /opt/giropops
+    - /opt/giropops/logs
+    - /opt/giropops/conf
+  register: app_directory_create
+
+- name: Copying Deployment File
+  template: 
+    src: app.yml.j2
+    dest: /opt/giropops/app.yml
+    owner: root
+    group: root
+    mode: 0644
+  register: app_deployment_file
+
+- name: Copying Deployment V2 File
+  template: 
+    src: app-v2.yml.j2
+    dest: /opt/giropops/app-v2.yml
+    owner: root
+    group: root
+    mode: 0644
+  register: app_deployment_file
+
+- name: Copy App Service File
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+  - { src: 'app_service.yml', dest: '/opt/giropops/app_service.yml' } 
+  register: app_service_copy
+
+- name: Deploying App Service
+  shell:
+    kubectl apply -f /opt/giropops/app_service.yml
+- name: Deploying App V1
+  shell:
+    kubectl apply -f /opt/giropops/app.yml
+
+- name: Deploy App V2
+  shell:
+    kubectl apply -f /opt/giropops/app-v2.yml
+
+- name: Time before removing old App version
+  pause:
+    minutes: '2'
+
+- name: Removing App V1
+  shell:
+    kubectl delete -f /opt/giropops/app.yml

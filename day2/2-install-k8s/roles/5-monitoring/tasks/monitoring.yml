@@ -1,0 +1,21 @@
+---
+- name: Helm Repo Monitoring
+  shell:
+    helm repo add {{ monitoring_tool }} "{{ monitoring_tool_repo }}"
+  register: helm_repo_add_monitoring
+
+- name: Helm Repo Update
+  shell:
+    helm repo update
+  register: helm_update
+
+- name: Helm Install Monitoring Message
+  debug:
+    msg: Installing Monitoring Tool "{{ monitoring_tool }}"
+
+- name: Helm Install Monitoring tool  
+  shell:
+    #helm install "{{ monitoring_tool }}" prometheus-community/kube-prometheus-stack
+    helm install "{{ monitoring_tool }}" "{{ monitoring_tool }}"/"{{ monitoring_tool_stack }}"
+    #helm install "{{ monitoring_tool_name }}" --set "{{ monitoring_tool_parameter }}"" "{{ monitoring_tool }}"/"{{ monitoring_tool_stack }}"
+  register: helm_install_monitoring

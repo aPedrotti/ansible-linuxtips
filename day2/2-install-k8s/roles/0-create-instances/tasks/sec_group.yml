@@ -1,0 +1,68 @@
+- name: Create Security Group
+  local_action: 
+    module: ec2_group
+    name: "{{ sec_group_name }}"
+    description: sg of my giropops
+    #vpc_id: vpc-xxxxxxxx
+    profile: "{{ profile }}"
+    region: us-east-1
+    rules:
+      - proto: tcp
+        from_port: 0
+        to_port: 65535
+        cidr_ip: "{{ my_ip }}"
+        rule_desc: Local_Admin
+      - proto: tcp
+        from_port: 2379
+        to_port:  2380
+        group_name: "{{ sec_group_name }}"
+        rule_desc: ETCD server API
+      - proto: tcp
+        from_port: 6443
+        to_port: 6443
+        group_name: "{{ sec_group_name }}"
+        rule_desc: kube-apiserver
+      - proto: tcp
+        from_port: 10250
+        to_port: 10250
+        group_name: "{{ sec_group_name }}"
+        rule_desc: Kubelet API
+      - proto: tcp
+        from_port: 10251
+        to_port: 10251
+        group_name: "{{ sec_group_name }}"
+        rule_desc: kube-scheduler
+      - proto: tcp
+        from_port: 10252
+        to_port: 10252
+        group_name: "{{ sec_group_name }}"
+        rule_desc: kube-controller-manager
+      - proto: tcp
+        from_port: 10255
+        to_port: 10255
+        group_name: "{{ sec_group_name }}"
+        rule_desc: Kubelet API Read-only
+      - proto: tcp
+        from_port: 30000
+        to_port: 32767
+        group_name: "{{ sec_group_name }}"
+        rule_desc: NodePort Services
+      - proto: tcp
+        from_port: 6783
+        to_port: 6783
+        group_name: "{{ sec_group_name }}"
+        rule_desc: WeaveNet TCP 
+      - proto: udp
+        from_port: 6783
+        to_port: 6783
+        group_name: "{{ sec_group_name }}"
+        rule_desc: WeaveNet UDP
+      - proto: udp
+        from_port: 6784
+        to_port: 6784
+        group_name: "{{ sec_group_name }}"
+        rule_desc: WeaveNet UDP
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+  register: firewall

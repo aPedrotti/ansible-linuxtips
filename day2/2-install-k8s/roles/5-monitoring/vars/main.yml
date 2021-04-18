@@ -1,0 +1,8 @@
+---
+# vars file for 5-monitoring
+monitoring_tool_name: monitoring
+monitoring_tool: prometheus-community
+monitoring_tool_repo: https://prometheus-community.github.io/helm-charts
+monitoring_tool_stack: kube-prometheus-stack
+monitoring_tool_parameter: "prometheusOperator.createCustomResource=false"
+
