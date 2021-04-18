@@ -38,7 +38,7 @@
     dest: "{{ item.dest }}"
   with_items:
   - { src: 'service-app.yml', dest: '/opt/giropops/service-app.yml' } 
-  register: service-app_copy
+  register: service_app_copy
 
 - name: Deploying App Service
   shell:
