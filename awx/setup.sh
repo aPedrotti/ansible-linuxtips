@@ -29,3 +29,5 @@ openssl rand -hex 32 > awx_secret_key
 #sed -i inventory "/s~/.awx/ /g/var/lib/awx/"
 
 echo "Open FILE = inventory ~ to update admin_password and secret_key"
+
+git clone https://github.com/aPedrotti/linuxtips-ansible.git

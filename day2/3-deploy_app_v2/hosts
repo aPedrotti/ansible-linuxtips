@@ -1,11 +1,11 @@
 [k8s-master]
-44.192.18.249 ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+ ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
 
 [k8s-workers]
-3.236.241.36 ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
-3.236.16.181 ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+ ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
+ ansible_user=ubuntu ansible_ssh_private_key_file="~/Documents/ansible-aws.pem" gather_facts=false
 
 [k8s-workers:vars]
-K8S_MASTER_NODE=172.31.70.48
-K8S_API_SECURE_PORT=6443
+K8S_MASTER_NODE=
+K8S_API_SECURE_PORT=
 
